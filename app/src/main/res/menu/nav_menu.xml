@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/itemHome"
+        android:icon="@drawable/ic_home"
+        android:title="@string/home"/>
+    <item
+        android:id="@+id/itemDrivers"
+        android:icon="@drawable/ic_driver"
+        android:title="@string/drivers"/>
+    <item
+        android:id="@+id/itemCircuits"
+        android:icon="@drawable/ic_circuits"
+        android:title="@string/circuits"/>
+    <item
+        android:id="@+id/itemTeams"
+        android:icon="@drawable/ic_shield"
+        android:title="@string/teams"/>
+    <item
+        android:id="@+id/itemFav"
+        android:icon="@drawable/ic_star"
+        android:title="@string/fav"/>
+</menu>

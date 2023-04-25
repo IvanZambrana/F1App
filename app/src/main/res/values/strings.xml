@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">F1App</string>
+    <string name="home">HOME</string>
+    <string name="drivers">DRIVERS</string>
+    <string name="circuits">CIRCUITS</string>
+    <string name="teams">TEAMS</string>
+    <string name="fav">FAVOURITES</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
