@@ -57,7 +57,7 @@
                     android:layout_height="5dp"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="10dp"
-                    tools:background="@color/astonmartin" />
+                    android:background="@color/astonmartin" />
             </LinearLayout>
         </LinearLayout>
 
@@ -67,7 +67,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
             android:fontFamily="@font/formula1bold"
-            android:text="fernando"
+            tools:text="fernando"
             android:textAllCaps="true"
             android:textColor="@color/white" />
 

@@ -1,16 +1,19 @@
 package com.accenture.f1app
 
-import android.app.Activity
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.RecyclerView
 import com.accenture.f1app.databinding.ActivityMainBinding
 import com.accenture.f1app.fragments.*
-import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.accenture.f1app.recyclerviewshome.DriversAdapter
 
 class MainActivity : AppCompatActivity() {
 
+
+
     private lateinit var binding : ActivityMainBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -18,6 +21,8 @@ class MainActivity : AppCompatActivity() {
 
         //Set home fragment as default
         makeCurrentFragment(HomeFragment())
+
+
 
         //Replace Fragment with the bottom nav bar
         binding.bottomNavigation.setOnItemSelectedListener {
@@ -32,6 +37,8 @@ class MainActivity : AppCompatActivity() {
         }
 
     }
+
+
 
 
     private fun makeCurrentFragment(fragment: Fragment) {

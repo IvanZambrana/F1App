@@ -26,13 +26,13 @@
 
 
         <TextView
-            android:id="@+id/TeamName"
+            android:id="@+id/teamName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_margin="5dp"
             android:fontFamily="@font/formula1bold"
-            android:text="Alfa romeo stake f1 team"
+            tools:text="Alfa romeo stake f1 team"
             android:textAlignment="center"
             android:textAllCaps="true"
             android:textColor="@color/white" />
