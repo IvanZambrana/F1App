@@ -12,4 +12,17 @@
     <color name="f1second">#FEFEFE</color>
     <color name="f1third">#15151E</color>
     <color name="f1fourth">#38383F</color>
+    <color name="f1fifth">#282934</color>
+
+    <!-- TEAMS -->
+    <color name="astonmartin">#116B65</color>
+    <color name="redbull">#3671C5</color>
+    <color name="mercedes">#41AEA3</color>
+    <color name="ferrari">#DC3338</color>
+    <color name="mclaren">#F78C1F</color>
+    <color name="haas">#BBB8B9</color>
+    <color name="alfaromeo">#C82D4B</color>
+    <color name="alpine">#DF8DB2</color>
+    <color name="alphatauri">#5E8EA9</color>
+    <color name="williams">#37BDDC</color>
 </resources>
