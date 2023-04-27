@@ -13,6 +13,7 @@
         android:scaleType="centerCrop"
         android:contentDescription="Imagen fija en la parte superior"/>
 
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
