@@ -1,12 +1,11 @@
-package com.accenture.f1app
+package com.accenture.f1app.view
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.RecyclerView
+import com.accenture.f1app.R
 import com.accenture.f1app.databinding.ActivityMainBinding
-import com.accenture.f1app.fragments.*
-import com.accenture.f1app.recyclerviewshome.DriversAdapter
+import com.accenture.f1app.view.fragments.*
 
 class MainActivity : AppCompatActivity() {
 

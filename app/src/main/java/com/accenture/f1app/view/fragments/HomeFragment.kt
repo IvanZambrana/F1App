@@ -1,4 +1,4 @@
-package com.accenture.f1app.fragments
+package com.accenture.f1app.view.fragments
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -11,9 +11,9 @@ import com.accenture.f1app.Circuit
 import com.accenture.f1app.Driver
 import com.accenture.f1app.R
 import com.accenture.f1app.Team
-import com.accenture.f1app.recyclerviewshome.CircuitsAdapter
-import com.accenture.f1app.recyclerviewshome.DriversAdapter
-import com.accenture.f1app.recyclerviewshome.TeamsAdapter
+import com.accenture.f1app.view.recyclerviewshome.CircuitsAdapter
+import com.accenture.f1app.view.recyclerviewshome.DriversAdapter
+import com.accenture.f1app.view.recyclerviewshome.TeamsAdapter
 
 class HomeFragment : Fragment() {
 

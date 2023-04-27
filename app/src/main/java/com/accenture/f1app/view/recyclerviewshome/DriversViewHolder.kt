@@ -1,4 +1,4 @@
-package com.accenture.f1app.recyclerviewshome
+package com.accenture.f1app.view.recyclerviewshome
 
 import android.view.View
 import android.widget.ImageView
