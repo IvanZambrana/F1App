@@ -11,9 +11,15 @@ import com.accenture.f1app.Circuit
 import com.accenture.f1app.Driver
 import com.accenture.f1app.R
 import com.accenture.f1app.Team
+import com.accenture.f1app.data.CircuitRepository
+import com.accenture.f1app.data.DriverRepository
+import com.accenture.f1app.data.TeamRepository
 import com.accenture.f1app.view.recyclerviewshome.CircuitsAdapter
 import com.accenture.f1app.view.recyclerviewshome.DriversAdapter
 import com.accenture.f1app.view.recyclerviewshome.TeamsAdapter
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class HomeFragment : Fragment() {
 
@@ -50,6 +56,17 @@ class HomeFragment : Fragment() {
         initCircuits(rootView) //Initialize circuits RecyclerView
         initTeams(rootView) //Initialize teams RecyclerView
 
+
+
+        val driverRepository: DriverRepository = DriverRepository()
+        val teamRepository: TeamRepository = TeamRepository()
+        val circuitRepository: CircuitRepository = CircuitRepository()
+
+        CoroutineScope(Dispatchers.IO).launch {
+            driverRepository.getDriversFromCurrentSeason()
+            teamRepository.getConstructorsFromCurrentSeason()
+            circuitRepository.getCircuitsFromCurrentSeason()
+        }
 
         return rootView
 
