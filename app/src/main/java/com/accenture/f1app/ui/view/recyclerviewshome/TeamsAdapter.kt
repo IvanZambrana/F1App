@@ -1,4 +1,4 @@
-package com.accenture.f1app.view.recyclerviewshome
+package com.accenture.f1app.ui.view.recyclerviewshome
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

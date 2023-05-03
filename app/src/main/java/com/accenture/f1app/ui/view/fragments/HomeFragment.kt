@@ -1,32 +1,39 @@
-package com.accenture.f1app.view.fragments
+package com.accenture.f1app.ui.view.fragments
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.accenture.f1app.Circuit
-import com.accenture.f1app.Driver
 import com.accenture.f1app.R
 import com.accenture.f1app.Team
+import com.accenture.f1app.core.Core
 import com.accenture.f1app.data.CircuitRepository
 import com.accenture.f1app.data.DriverRepository
 import com.accenture.f1app.data.TeamRepository
-import com.accenture.f1app.view.recyclerviewshome.CircuitsAdapter
-import com.accenture.f1app.view.recyclerviewshome.DriversAdapter
-import com.accenture.f1app.view.recyclerviewshome.TeamsAdapter
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import com.accenture.f1app.data.model.driver.Driver
+import com.accenture.f1app.data.model.driver.MRData
+import com.accenture.f1app.data.network.F1ApiClient
+import com.accenture.f1app.ui.view.recyclerviewshome.CircuitsAdapter
+import com.accenture.f1app.ui.view.recyclerviewshome.DriversAdapter
+import com.accenture.f1app.ui.view.recyclerviewshome.TeamsAdapter
+import kotlinx.coroutines.*
+import retrofit2.create
 
 class HomeFragment : Fragment() {
 
     //Drivers
+    /*
     private val drivers = listOf(
         Driver.Alonso
-    )
+    )*/
+    private var drivers = mutableListOf<Driver>()
+
     private lateinit var driversAdapter: DriversAdapter
     private lateinit var rvDrivers: RecyclerView
 
@@ -94,7 +101,26 @@ class HomeFragment : Fragment() {
         rvDrivers.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         rvDrivers.adapter = driversAdapter
+
+        val apiService = Core.getRetrofit().create(F1ApiClient::class.java)
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                val response = apiService.getDriversFromCurrentSeason()
+                if (response.isSuccessful && response.body() != null && response.body()!!.MRData.DriverTable.Drivers.isNotEmpty()) {
+                    withContext(Dispatchers.Main) {
+                        drivers = response.body()!!.MRData.DriverTable.Drivers.toMutableList()
+                        driversAdapter.drivers = drivers
+                        driversAdapter.notifyDataSetChanged()
+                    }
+                } else {
+                    Toast.makeText(requireContext(), "No se encontraron pilotos", Toast.LENGTH_SHORT).show()
+                }
+            } catch (e: Exception) {
+                Toast.makeText(requireContext(), "Error al cargar los datos", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
+
 
 
 }

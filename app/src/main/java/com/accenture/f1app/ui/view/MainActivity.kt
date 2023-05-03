@@ -1,11 +1,11 @@
-package com.accenture.f1app.view
+package com.accenture.f1app.ui.view
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import com.accenture.f1app.R
 import com.accenture.f1app.databinding.ActivityMainBinding
-import com.accenture.f1app.view.fragments.*
+import com.accenture.f1app.ui.view.fragments.*
 
 class MainActivity : AppCompatActivity() {
 

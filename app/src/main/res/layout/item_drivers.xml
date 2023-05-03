@@ -24,7 +24,7 @@
                 android:id="@+id/imgDriver"
                 android:layout_width="150dp"
                 android:layout_height="150dp"
-                android:src="@drawable/feralo01" />
+                tools:src="@drawable/feralo01" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -38,7 +38,7 @@
                     android:layout_height="60dp"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginVertical="20dp"
-                    android:src="@drawable/spain" />
+                    tools:src="@drawable/spain" />
 
                 <TextView
                     android:id="@+id/tvDriverNumber"
@@ -46,7 +46,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:fontFamily="@font/formula1wide"
-                    android:text="14"
+                    tools:text="14"
                     android:textColor="@color/white"
                     android:textSize="19sp"
                     android:textStyle="bold" />
@@ -57,7 +57,7 @@
                     android:layout_height="5dp"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="10dp"
-                    android:background="@color/astonmartin" />
+                    tools:background="@color/astonmartin" />
             </LinearLayout>
         </LinearLayout>
 
@@ -77,7 +77,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
             android:fontFamily="@font/formula1wide"
-            android:text="alonso"
+            tools:text="alonso"
             android:textAllCaps="true"
             android:textColor="@color/white" />
 

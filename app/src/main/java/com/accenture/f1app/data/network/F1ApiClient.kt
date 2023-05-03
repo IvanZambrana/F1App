@@ -15,9 +15,6 @@ interface F1ApiClient {
 
     @GET("api/f1/current/circuits.json")
     suspend fun getCircuitsFromCurrentSeason(): Response<CircuitResponse>
-    /*
-    @GET("api/f1/current/next.json")
-    suspend fun getNextRace(): Response<NextRaceResponse>
-    */
+
 
 }

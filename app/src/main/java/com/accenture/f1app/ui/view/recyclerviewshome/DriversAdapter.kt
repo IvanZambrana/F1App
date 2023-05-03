@@ -1,12 +1,14 @@
-package com.accenture.f1app.view.recyclerviewshome
+package com.accenture.f1app.ui.view.recyclerviewshome
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.accenture.f1app.Driver
-import com.accenture.f1app.R
+//import com.accenture.f1app.Driver
 
-class DriversAdapter(private val drivers: List<Driver>) :
+import com.accenture.f1app.R
+import com.accenture.f1app.data.model.driver.Driver
+
+class DriversAdapter(var drivers: MutableList<Driver>) :
     RecyclerView.Adapter<DriversViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DriversViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_drivers, parent, false)
@@ -16,7 +18,7 @@ class DriversAdapter(private val drivers: List<Driver>) :
 
 
     override fun onBindViewHolder(holder: DriversViewHolder, position: Int) {
-        holder.render(drivers[position])
+        holder.bind(drivers[position])
     }
 
     override fun getItemCount(): Int = drivers.size

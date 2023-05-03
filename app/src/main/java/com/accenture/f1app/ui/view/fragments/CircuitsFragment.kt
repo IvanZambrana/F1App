@@ -1,4 +1,4 @@
-package com.accenture.f1app.view.fragments
+package com.accenture.f1app.ui.view.fragments
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
