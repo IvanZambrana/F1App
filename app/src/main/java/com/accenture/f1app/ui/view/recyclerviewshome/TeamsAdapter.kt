@@ -4,9 +4,9 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.accenture.f1app.R
-import com.accenture.f1app.Team
+import com.accenture.f1app.data.model.team.Constructor
 
-class TeamsAdapter(private val teams: List<Team>) :
+class TeamsAdapter(var teams: MutableList<Constructor>) :
     RecyclerView.Adapter<TeamsViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TeamsViewHolder {

@@ -1,7 +1,6 @@
 package com.accenture.f1app.ui.view.fragments
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -9,45 +8,34 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.accenture.f1app.Circuit
 import com.accenture.f1app.R
-import com.accenture.f1app.Team
 import com.accenture.f1app.core.Core
 import com.accenture.f1app.data.CircuitRepository
 import com.accenture.f1app.data.DriverRepository
 import com.accenture.f1app.data.TeamRepository
+import com.accenture.f1app.data.model.circuit.Circuit
 import com.accenture.f1app.data.model.driver.Driver
-import com.accenture.f1app.data.model.driver.MRData
+import com.accenture.f1app.data.model.team.Constructor
 import com.accenture.f1app.data.network.F1ApiClient
 import com.accenture.f1app.ui.view.recyclerviewshome.CircuitsAdapter
 import com.accenture.f1app.ui.view.recyclerviewshome.DriversAdapter
 import com.accenture.f1app.ui.view.recyclerviewshome.TeamsAdapter
 import kotlinx.coroutines.*
-import retrofit2.create
 
 class HomeFragment : Fragment() {
 
     //Drivers
-    /*
-    private val drivers = listOf(
-        Driver.Alonso
-    )*/
     private var drivers = mutableListOf<Driver>()
-
     private lateinit var driversAdapter: DriversAdapter
     private lateinit var rvDrivers: RecyclerView
 
     //Circuits
-    private val circuits = listOf(
-        Circuit.Montmelo
-    )
+    private var circuits = mutableListOf<Circuit>()
     private lateinit var circuitsAdapter: CircuitsAdapter
     private lateinit var rvCircuits: RecyclerView
 
     //Teams
-    private var teams = listOf(
-        Team.AlfaRomeo
-    )
+    private var teams = mutableListOf<Constructor>()
     private lateinit var teamsAdapter: TeamsAdapter
     private lateinit var rvTeams: RecyclerView
 
@@ -85,6 +73,34 @@ class HomeFragment : Fragment() {
         rvTeams.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         rvTeams.adapter = teamsAdapter
+
+        val apiService = Core.getRetrofit().create(F1ApiClient::class.java)
+        // Call the API to get the current season teams
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                val response = apiService.getConstructorsFromCurrentSeason()
+                if (response.isSuccessful) {
+                    // Update the UI on the main thread with the team data
+                    withContext(Dispatchers.Main) {
+                        teams =
+                            response.body()!!.MRData.ConstructorTable.Constructors.toMutableList()
+                        teamsAdapter.teams = teams
+                        teamsAdapter.notifyDataSetChanged()
+
+
+                    }
+                } else {
+                    Toast.makeText(
+                        requireContext(),
+                        "No teams found",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            } catch (e: Exception) {
+                Toast.makeText(requireContext(), " Error loading data", Toast.LENGTH_SHORT)
+                    .show()
+            }
+        }
     }
 
     private fun initCircuits(rootView: View) {
@@ -93,6 +109,30 @@ class HomeFragment : Fragment() {
         rvCircuits.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         rvCircuits.adapter = circuitsAdapter
+
+        val apiService = Core.getRetrofit().create(F1ApiClient::class.java)
+
+        // Call the API to get the current season circuits
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                val response = apiService.getCircuitsFromCurrentSeason()
+                if (response.isSuccessful) {
+                    // Update the UI on the main thread with the circuit data
+                    withContext(Dispatchers.Main) {
+                        //circuitsAdapter.render(response.body()?.circuitTable?.circuits ?: emptyList())
+                        circuits = response.body()!!.MRData.CircuitTable.Circuits.toMutableList()
+                        circuitsAdapter.circuits = circuits
+                        circuitsAdapter.notifyDataSetChanged()
+
+
+                    }
+                } else {
+                    Toast.makeText(requireContext(), "No circuits found", Toast.LENGTH_SHORT).show()
+                }
+            } catch (e: Exception) {
+                Toast.makeText(requireContext(), " Error loading data", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
     private fun initDrivers(rootView: View) {

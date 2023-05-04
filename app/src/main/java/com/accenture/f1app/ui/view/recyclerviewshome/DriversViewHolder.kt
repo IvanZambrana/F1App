@@ -2,8 +2,6 @@ package com.accenture.f1app.ui.view.recyclerviewshome
 
 import android.util.Log
 import android.view.View
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 //import com.accenture.f1app.Driver
 import com.accenture.f1app.R
@@ -13,21 +11,7 @@ import com.accenture.f1app.databinding.ItemDriversBinding
 class DriversViewHolder(view: View) : RecyclerView.ViewHolder(view){
 
     private val binding = ItemDriversBinding.bind(view)
-    /*
-    private val driverName: TextView = view.findViewById(R.id.driverName)
-    private val driverSName: TextView = view.findViewById(R.id.driverSName)
-    private val driverNumber: TextView = view.findViewById(R.id.tvDriverNumber)
-    private val imgDriver: ImageView = view.findViewById(R.id.imgDriver)
-    private val imgDriverFlag: ImageView = view.findViewById(R.id.imgDriverFlag)
-    private val driverDivider: View = view.findViewById(R.id.driverDivider)
-    */
 
-    /*
-    fun bind(driver: Driver){
-        binding.driverName.text = driver.givenName
-
-    }
-    * */
     fun bind(driver: Driver){
         binding.driverName.text = driver.givenName
         binding.driverSName.text = driver.familyName
@@ -41,7 +25,7 @@ class DriversViewHolder(view: View) : RecyclerView.ViewHolder(view){
             "Spanish" -> R.drawable.spain
             "Mexican" -> R.drawable.mexico
             "Dutch" -> R.drawable.netherlands
-            "Monegasque" -> R.drawable.monaco
+            "Monegasque" -> R.drawable.monaco_flag1
             "Canadian" -> R.drawable.canada
             "French" -> R.drawable.france
             "Australian" -> R.drawable.australia
