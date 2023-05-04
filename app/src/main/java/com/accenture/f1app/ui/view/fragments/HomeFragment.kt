@@ -52,7 +52,6 @@ class HomeFragment : Fragment() {
         initTeams(rootView) //Initialize teams RecyclerView
 
 
-
         val driverRepository: DriverRepository = DriverRepository()
         val teamRepository: TeamRepository = TeamRepository()
         val circuitRepository: CircuitRepository = CircuitRepository()
@@ -90,15 +89,10 @@ class HomeFragment : Fragment() {
 
                     }
                 } else {
-                    Toast.makeText(
-                        requireContext(),
-                        "No teams found",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    Toast.makeText(requireContext(), "No teams found", Toast.LENGTH_SHORT).show()
                 }
             } catch (e: Exception) {
-                Toast.makeText(requireContext(), " Error loading data", Toast.LENGTH_SHORT)
-                    .show()
+                Toast.makeText(requireContext(), " Error loading data", Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -153,14 +147,13 @@ class HomeFragment : Fragment() {
                         driversAdapter.notifyDataSetChanged()
                     }
                 } else {
-                    Toast.makeText(requireContext(), "No se encontraron pilotos", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), "No drivers found", Toast.LENGTH_SHORT).show()
                 }
             } catch (e: Exception) {
-                Toast.makeText(requireContext(), "Error al cargar los datos", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Error loading data", Toast.LENGTH_SHORT).show()
             }
         }
     }
-
 
 
 }

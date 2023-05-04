@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="100dp"
+    app:cardBackgroundColor="@color/f1fourth"
+    app:cardCornerRadius="16dp"
+    android:layout_marginTop="10dp"
+    android:layout_marginHorizontal="5dp"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="110dp"
+            android:layout_height="match_parent"
+            android:layout_marginVertical="10dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tvDriverNumber"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="15dp"
+                android:layout_marginTop="20dp"
+                android:fontFamily="@font/formula1wide"
+                android:textColor="@color/f1second"
+                android:textSize="25sp"
+                android:layout_gravity="center"
+                tools:text="44" />
+
+            <View
+                android:id="@+id/driverDivider"
+                android:layout_width="70dp"
+                android:layout_height="5dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="10dp"
+                tools:background="@color/astonmartin" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="290dp"
+            android:layout_height="match_parent"
+            android:layout_marginVertical="10dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tvGivenName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/formula1bold"
+                android:textAllCaps="true"
+                android:textColor="@color/f1second"
+                android:textSize="20sp"
+                android:layout_marginTop="10dp"
+                tools:text="Fernando" />
+
+            <TextView
+                android:id="@+id/tvFamilyName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/formula1wide"
+                android:textAllCaps="true"
+                android:textColor="@color/f1second"
+                android:textSize="17sp"
+                tools:text="verstappen" />
+        </LinearLayout>
+
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

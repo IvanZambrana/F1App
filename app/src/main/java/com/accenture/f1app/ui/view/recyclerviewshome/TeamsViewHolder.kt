@@ -15,12 +15,11 @@ class TeamsViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     fun render(constructor: Constructor){
         binding.teamName.text = constructor.name
 
-        //Get the image of the circuit according to their id and set it in the ImageView 'imgTeam'
+        //Get the image of the team according to their id and set it in the ImageView 'imgTeam'
         val teamId = constructor.constructorId
         val teamImageResource = itemView.context.resources.getIdentifier(teamId, "drawable", itemView.context.packageName)
-
-
         binding.imgTeam.setImageResource(teamImageResource)
+
 
     }
 }
