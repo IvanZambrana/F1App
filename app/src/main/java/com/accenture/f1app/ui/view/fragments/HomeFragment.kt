@@ -1,6 +1,7 @@
 package com.accenture.f1app.ui.view.fragments
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -10,9 +11,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.accenture.f1app.R
 import com.accenture.f1app.core.Core
-import com.accenture.f1app.data.CircuitRepository
-import com.accenture.f1app.data.DriverRepository
-import com.accenture.f1app.data.TeamRepository
 import com.accenture.f1app.data.model.circuit.Circuit
 import com.accenture.f1app.data.model.driver.Driver
 import com.accenture.f1app.data.model.team.Constructor
@@ -28,6 +26,8 @@ class HomeFragment : Fragment() {
     private var drivers = mutableListOf<Driver>()
     private lateinit var driversAdapter: DriversAdapter
     private lateinit var rvDrivers: RecyclerView
+
+    //private var driverViewModel:DriverViewModel by viewModels { DriverViewModel(drivers) }
 
     //Circuits
     private var circuits = mutableListOf<Circuit>()
@@ -52,15 +52,6 @@ class HomeFragment : Fragment() {
         initTeams(rootView) //Initialize teams RecyclerView
 
 
-        val driverRepository: DriverRepository = DriverRepository()
-        val teamRepository: TeamRepository = TeamRepository()
-        val circuitRepository: CircuitRepository = CircuitRepository()
-
-        CoroutineScope(Dispatchers.IO).launch {
-            driverRepository.getDriversFromCurrentSeason()
-            teamRepository.getConstructorsFromCurrentSeason()
-            circuitRepository.getCircuitsFromCurrentSeason()
-        }
 
         return rootView
 
@@ -145,6 +136,9 @@ class HomeFragment : Fragment() {
                         drivers = response.body()!!.MRData.DriverTable.Drivers.toMutableList()
                         driversAdapter.drivers = drivers
                         driversAdapter.notifyDataSetChanged()
+
+
+
                     }
                 } else {
                     Toast.makeText(requireContext(), "No drivers found", Toast.LENGTH_SHORT).show()
@@ -153,6 +147,18 @@ class HomeFragment : Fragment() {
                 Toast.makeText(requireContext(), "Error loading data", Toast.LENGTH_SHORT).show()
             }
         }
+
+
+        //driversAdapter = driversAdapter{driverId -> navigateToDetail(driverId)}
+    }
+
+    public fun navigateToDetail(id: String) {
+   /*     val intent = Intent(requireContext(), DetailDriverActivity::class.java)
+        intent.putExtra(EXTRA_ID, id)
+        startActivity(intent)
+
+    */
+        Log.i("izn", "La Id del piloto seleccionado es $id")
     }
 
 

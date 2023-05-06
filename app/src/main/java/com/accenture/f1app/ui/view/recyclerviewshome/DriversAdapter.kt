@@ -16,7 +16,6 @@ class DriversAdapter(var drivers: MutableList<Driver>) :
     }
 
 
-
     override fun onBindViewHolder(holder: DriversViewHolder, position: Int) {
         holder.bind(drivers[position])
     }

@@ -6,7 +6,9 @@ import androidx.recyclerview.widget.RecyclerView
 //import com.accenture.f1app.Driver
 import com.accenture.f1app.R
 import com.accenture.f1app.data.model.driver.Driver
+import com.accenture.f1app.data.model.driver.DriverResponse
 import com.accenture.f1app.databinding.ItemDriversBinding
+import com.accenture.f1app.ui.view.fragments.HomeFragment
 
 class DriversViewHolder(view: View) : RecyclerView.ViewHolder(view){
 
@@ -63,6 +65,15 @@ class DriversViewHolder(view: View) : RecyclerView.ViewHolder(view){
             else -> R.color.white
         }
         binding.driverDivider.setBackgroundResource(teamColor)
+
+        val driverId = driver.driverId
+        binding.root.setOnClickListener {
+            Log.i("izn", "Pulsado")
+
+            val homeFragment: HomeFragment = HomeFragment()
+
+            homeFragment.navigateToDetail(driverId)
+        }
     }
 
 }

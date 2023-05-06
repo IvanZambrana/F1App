@@ -8,6 +8,12 @@ import com.accenture.f1app.data.model.circuit.Circuit
 
 class CircuitListAdapter(var circuits: MutableList<Circuit>) :
     RecyclerView.Adapter<CircuitListViewHolder>(){
+
+    var filteredCircuits: MutableList<Circuit> = mutableListOf()
+
+    init {
+        filteredCircuits.addAll(circuits)
+    }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CircuitListViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_circuitlist,parent, false)
         return CircuitListViewHolder(view)
@@ -15,8 +21,28 @@ class CircuitListAdapter(var circuits: MutableList<Circuit>) :
 
 
     override fun onBindViewHolder(holder: CircuitListViewHolder, position: Int) {
-        holder.bind(circuits[position])
+        holder.bind(filteredCircuits[position])
     }
 
-    override fun getItemCount(): Int = circuits.size
+    override fun getItemCount(): Int = filteredCircuits.size
+
+    fun filter(query: String){
+        filteredCircuits.clear()
+        if(query.isEmpty()){
+            filteredCircuits.addAll(circuits)
+        }else{
+            for (circuit in circuits){
+                if (circuit.circuitName.contains(query, true) || circuit.circuitId.contains(query, true)) {
+                    filteredCircuits.add(circuit)
+                }
+            }
+        }
+        notifyDataSetChanged()
+    }
+
+    fun updateCircuits(newCircuits: List<Circuit>){
+        circuits.clear()
+        circuits.addAll(newCircuits)
+        filter("")
+    }
 }

@@ -7,6 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
+import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.accenture.f1app.R
@@ -35,26 +37,60 @@ class DriversFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         val rootView = inflater.inflate(R.layout.fragment_drivers, container, false)
+        binding = FragmentDriversBinding.bind(rootView)
 
-        initDrivers(rootView)
 
-        /* binding.svDriver.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
-             override fun onQueryTextSubmit(query: String?): Boolean {
-                 searchByName(query.orEmpty())
-                 return false
-             }
+        //initDrivers(rootView)
+        initDrivers()
 
-             override fun onQueryTextChange(newText: String?): Boolean {
-                 return false
-             }
-         })*/
+        binding.svDriver.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                searchByName(query.orEmpty())
+                return false
+            }
 
-        return rootView
+            override fun onQueryTextChange(newText: String?): Boolean {
+               driversAdapter.filter(newText.orEmpty())
+                return false
+            }
+        })
+
+        return binding.root
+        //return rootView
     }
 
+    /*
+    FUNCION INITDRIVERS QUE FUNCIONA
     private fun initDrivers(rootView: View) {
+         driversAdapter = DriverListAdapter(drivers)
+         rvDrivers = rootView.findViewById(R.id.driverList)
+         rvDrivers.layoutManager =
+             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+         rvDrivers.adapter = driversAdapter
+
+         val apiService = Core.getRetrofit().create(F1ApiClient::class.java)
+         CoroutineScope(Dispatchers.IO).launch {
+             try {
+                 val response = apiService.getDriversFromCurrentSeason()
+                 if (response.isSuccessful && response.body() != null && response.body()!!.MRData.DriverTable.Drivers.isNotEmpty()) {
+                     withContext(Dispatchers.Main) {
+                         drivers = response.body()!!.MRData.DriverTable.Drivers.toMutableList()
+                         driversAdapter.drivers = drivers
+                         driversAdapter.notifyDataSetChanged()
+                     }
+                 } else {
+                     Toast.makeText(requireContext(), "No drivers found", Toast.LENGTH_SHORT).show()
+                 }
+
+             } catch (e: Exception) {
+                 Toast.makeText(requireContext(), "Error loading data", Toast.LENGTH_SHORT).show()
+             }
+         }
+     }
+ }*/
+    private fun initDrivers() {
         driversAdapter = DriverListAdapter(drivers)
-        rvDrivers = rootView.findViewById(R.id.driverList)
+        rvDrivers = binding.driverList
         rvDrivers.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         rvDrivers.adapter = driversAdapter
@@ -66,15 +102,41 @@ class DriversFragment : Fragment() {
                 if (response.isSuccessful && response.body() != null && response.body()!!.MRData.DriverTable.Drivers.isNotEmpty()) {
                     withContext(Dispatchers.Main) {
                         drivers = response.body()!!.MRData.DriverTable.Drivers.toMutableList()
-                        driversAdapter.drivers = drivers
-                        driversAdapter.notifyDataSetChanged()
+                        driversAdapter.updateDrivers(drivers)
                     }
                 } else {
+                    withContext(Dispatchers.Main) {
+                        Toast.makeText(requireContext(), "No drivers found", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            } catch (e: Exception) {
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(requireContext(), "Error loading data", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+    }
+
+
+
+
+
+    private fun searchByName(query: String) {
+        CoroutineScope(Dispatchers.IO).launch {
+            val apiService = Core.getRetrofit().create(F1ApiClient::class.java)
+            val response = apiService.getDriversFromCurrentSeason(query)
+            if (response.isSuccessful && response.body() != null && response.body()!!.MRData.DriverTable.Drivers.isNotEmpty()) {
+                val filteredDrivers = response.body()!!.MRData.DriverTable.Drivers.toMutableList()
+                withContext(Dispatchers.Main) {
+                    drivers = filteredDrivers
+                    driversAdapter.updateDrivers(drivers)
+                }
+            } else {
+                withContext(Dispatchers.Main) {
+                    drivers.clear()
+                    driversAdapter.updateDrivers(drivers)
                     Toast.makeText(requireContext(), "No drivers found", Toast.LENGTH_SHORT).show()
                 }
-
-            } catch (e: Exception) {
-                Toast.makeText(requireContext(), "Error loading data", Toast.LENGTH_SHORT).show()
             }
         }
     }

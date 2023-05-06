@@ -9,14 +9,41 @@ import com.accenture.f1app.ui.view.recyclerviewshome.DriversViewHolder
 
 class DriverListAdapter(var drivers: MutableList<Driver>) :
     RecyclerView.Adapter<DriverListViewHolder>() {
+
+    var filteredDrivers: MutableList<Driver> = mutableListOf()
+
+    init {
+        filteredDrivers.addAll(drivers)
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DriverListViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_driverlist, parent, false)
         return DriverListViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: DriverListViewHolder, position: Int) {
-        holder.bind(drivers[position])
+        holder.bind(filteredDrivers[position])
     }
 
-    override fun getItemCount(): Int = drivers.size
+    override fun getItemCount(): Int = filteredDrivers.size
+
+    fun filter(query: String) {
+        filteredDrivers.clear()
+        if (query.isEmpty()) {
+            filteredDrivers.addAll(drivers)
+        } else {
+            for (driver in drivers) {
+                if (driver.givenName.contains(query, true) || driver.familyName.contains(query, true)) {
+                    filteredDrivers.add(driver)
+                }
+            }
+        }
+        notifyDataSetChanged()
+    }
+
+    fun updateDrivers(newDrivers: List<Driver>) {
+        drivers.clear()
+        drivers.addAll(newDrivers)
+        filter("")
+    }
 }

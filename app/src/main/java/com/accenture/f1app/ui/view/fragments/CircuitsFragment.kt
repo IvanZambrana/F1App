@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.accenture.f1app.R
@@ -32,12 +33,79 @@ class CircuitsFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         val rootView = inflater.inflate(R.layout.fragment_circuits, container, false)
+        binding = FragmentCircuitsBinding.bind(rootView)
 
-        initCircuits(rootView)
-        return rootView
+        //initCircuits(rootView)
+        initCircuits()
+
+        binding.svCircuit.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                searchByName(query.orEmpty())
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                circuitAdapter.filter(newText.orEmpty())
+                return false
+            }
+        })
+
+
+        //return rootView
+        return binding.root
     }
 
-    private fun initCircuits(rootView: View) {
+    private fun initCircuits(){
+        circuitAdapter = CircuitListAdapter(circuits)
+        rvCircuit = binding.circuitList
+        rvCircuit.layoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+        rvCircuit.adapter = circuitAdapter
+
+        val apiService = Core.getRetrofit().create(F1ApiClient::class.java)
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                val response = apiService.getCircuitsFromCurrentSeason()
+                if (response.isSuccessful && response.body() != null && response.body()!!.MRData.CircuitTable.Circuits.isNotEmpty()) {
+                    withContext(Dispatchers.Main) {
+                        circuits = response.body()!!.MRData.CircuitTable.Circuits.toMutableList()
+                        circuitAdapter.updateCircuits(circuits)
+                    }
+                } else {
+                    withContext(Dispatchers.Main) {
+                        Toast.makeText(requireContext(), "No circuits found", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            } catch (e: Exception) {
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(requireContext(), "Error loading data", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+    }
+
+
+    private fun searchByName(query: String){
+        CoroutineScope(Dispatchers.IO).launch {
+            val apiService = Core.getRetrofit().create(F1ApiClient::class.java)
+            val response = apiService.getCircuitsFromCurrentSeason(query)
+            if (response.isSuccessful && response.body() != null && response.body()!!.MRData.CircuitTable.Circuits.isNotEmpty()) {
+                val filteredCircuits = response.body()!!.MRData.CircuitTable.Circuits.toMutableList()
+                withContext(Dispatchers.Main) {
+                    circuits = filteredCircuits
+                    circuitAdapter.updateCircuits(circuits)
+                }
+            } else {
+                withContext(Dispatchers.Main) {
+                    circuits.clear()
+                    circuitAdapter.updateCircuits(circuits)
+                    Toast.makeText(requireContext(), "No circuits found", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+    }
+
+   /* private fun initCircuits(rootView: View) {
         circuitAdapter = CircuitListAdapter(circuits)
         rvCircuit = rootView.findViewById(R.id.circuitList)
         rvCircuit.layoutManager =
@@ -61,6 +129,6 @@ class CircuitsFragment : Fragment() {
                 Toast.makeText(requireContext(), "Error loading data", Toast.LENGTH_SHORT).show()
             }
         }
-    }
+    }*/
 
 }

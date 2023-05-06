@@ -1,7 +1,6 @@
 package com.accenture.f1app.data
 
 import android.util.Log
-import com.accenture.f1app.Team
 import com.accenture.f1app.data.model.driver.Driver
 import com.accenture.f1app.data.network.DriverService
 import com.accenture.f1app.data.network.TeamService
