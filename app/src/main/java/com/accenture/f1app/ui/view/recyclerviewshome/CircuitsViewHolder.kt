@@ -11,12 +11,12 @@ class CircuitsViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     private val binding = ItemCircuitBinding.bind(view)
 
 
-    fun render(circuit: Circuit){
+    fun render(circuit: Circuit, onItemSelected: (String) -> Unit){
         binding.circuitName.text = circuit.circuitName
 
 
 
-        // Get the flag image according to the driver's nationality
+        // Get the flag image according to the circuit's country
         val country = circuit.Location.country
         val flagImage = when(country){
             "UK" -> R.drawable.unitedkingdom
@@ -51,6 +51,8 @@ class CircuitsViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
 
         binding.imgCircuit.setImageResource(circuitImageResource)
+
+        binding.root.setOnClickListener{onItemSelected(circuit.circuitId)}
 
     }
 }

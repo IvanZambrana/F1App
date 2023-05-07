@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:app="http://schemas.android.com/apk/res-auto"
-             android:id="@+id/nav_graph">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph">
 
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.accenture.f1app.ui.view.fragments.HomeFragment"
+        android:label="HomeFragment"/>
+    <fragment
+        android:id="@+id/driverDetailFragment"
+        android:name="com.accenture.f1app.ui.view.detail.DriverDetailFragment"
+        android:label="DriverDetailFragment"/>
 </navigation>

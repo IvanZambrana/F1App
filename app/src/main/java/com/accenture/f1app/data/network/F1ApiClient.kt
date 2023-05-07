@@ -10,18 +10,25 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface F1ApiClient {
+
+    //Drivers
     @GET("api/f1/current/drivers.json")
     suspend fun getDriversFromCurrentSeason(@Query("q") query: String? = null): Response<DriverResponse>
-    //suspend fun getDriversFromCurrentSeason(): Response<DriverResponse>
+    @GET("api/f1/current/drivers/{id}.json")
+    suspend fun getDriverById(@Path("id") driverId: String?): Response<DriverResponse>
 
+    //Constructors
     @GET("api/f1/current/constructors.json")
     suspend fun getConstructorsFromCurrentSeason(@Query("q") query: String? = null): Response<TeamResponse>
-    //suspend fun getConstructorsFromCurrentSeason(): Response<TeamResponse>
+    @GET("api/f1/current/constructors/{id}.json")
+    suspend fun getConstructorById(@Path("id") constructorId: String?): Response<TeamResponse>
 
+    //Circuits
     @GET("api/f1/current/circuits.json")
     suspend fun getCircuitsFromCurrentSeason(@Query("q") query: String? = null): Response<CircuitResponse>
-    //suspend fun getCircuitsFromCurrentSeason(): Response<CircuitResponse>
-    @GET("api/f1/current/drivers/{id}.json")
-    suspend fun getDriverById(@Path("id") driverId: String): Driver
+    @GET("api/f1/current/circuits/{id}.json")
+    suspend fun getCircuitById(@Path("id") circuitId: String?): Response<CircuitResponse>
+
+
 
 }

@@ -6,22 +6,20 @@ import androidx.recyclerview.widget.RecyclerView
 //import com.accenture.f1app.Driver
 import com.accenture.f1app.R
 import com.accenture.f1app.data.model.driver.Driver
-import com.accenture.f1app.data.model.driver.DriverResponse
 import com.accenture.f1app.databinding.ItemDriversBinding
-import com.accenture.f1app.ui.view.fragments.HomeFragment
 
-class DriversViewHolder(view: View) : RecyclerView.ViewHolder(view){
+class DriversViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
     private val binding = ItemDriversBinding.bind(view)
 
-    fun bind(driver: Driver){
+    fun bind(driver: Driver, onItemSelected: (String) -> Unit) {
         binding.driverName.text = driver.givenName
         binding.driverSName.text = driver.familyName
         binding.tvDriverNumber.text = driver.permanentNumber
 
         // Get the flag image according to the driver's nationality
         val nationality = driver.nationality
-        val flagImage = when(nationality){
+        val flagImage = when (nationality) {
             "British" -> R.drawable.unitedkingdom
             "German" -> R.drawable.germany
             "Spanish" -> R.drawable.spain
@@ -44,9 +42,11 @@ class DriversViewHolder(view: View) : RecyclerView.ViewHolder(view){
         //Get the image of the driver according to their code and set it in the ImageView 'imgDriver'
         val driverCode = driver.code
         val driverImageName = driverCode.lowercase()
-        val driverImageResource = itemView.context.resources.getIdentifier(driverImageName, "drawable", itemView.context.packageName)
-        Log.d("DriverImage", "Driver code: $driverImageName, Image resource: $driverImageResource")
-
+        val driverImageResource = itemView.context.resources.getIdentifier(
+            driverImageName,
+            "drawable",
+            itemView.context.packageName
+        )
         binding.imgDriver.setImageResource(driverImageResource)
 
         //Change color in driverDivider according to their code
@@ -66,14 +66,8 @@ class DriversViewHolder(view: View) : RecyclerView.ViewHolder(view){
         }
         binding.driverDivider.setBackgroundResource(teamColor)
 
-        val driverId = driver.driverId
-        binding.root.setOnClickListener {
-            Log.i("izn", "Pulsado")
 
-            val homeFragment: HomeFragment = HomeFragment()
-
-            homeFragment.navigateToDetail(driverId)
-        }
+        binding.root.setOnClickListener { onItemSelected(driver.driverId) }
     }
 
 }

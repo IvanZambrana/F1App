@@ -12,7 +12,7 @@ class TeamsViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     private val binding = ItemTeamBinding.bind(view)
 
 
-    fun render(constructor: Constructor){
+    fun render(constructor: Constructor, onItemSelected: (String) -> Unit){
         binding.teamName.text = constructor.name
 
         //Get the image of the team according to their id and set it in the ImageView 'imgTeam'
@@ -20,6 +20,6 @@ class TeamsViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val teamImageResource = itemView.context.resources.getIdentifier(teamId, "drawable", itemView.context.packageName)
         binding.imgTeam.setImageResource(teamImageResource)
 
-
+        binding.root.setOnClickListener{onItemSelected(constructor.constructorId)}
     }
 }

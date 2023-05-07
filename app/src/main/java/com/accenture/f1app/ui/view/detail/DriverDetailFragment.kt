@@ -1,60 +1,99 @@
 package com.accenture.f1app.ui.view.detail
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import com.accenture.f1app.R
+import com.accenture.f1app.core.Core
+import com.accenture.f1app.data.model.driver.Driver
+import com.accenture.f1app.data.model.driver.DriverResponse
+import com.accenture.f1app.data.model.driver.MRData
+import com.accenture.f1app.data.network.F1ApiClient
+import com.accenture.f1app.databinding.FragmentDriverDetailBinding
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [DriverDetailFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class DriverDetailFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+    private lateinit var binding: FragmentDriverDetailBinding
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_driver_detail, container, false)
+        binding = FragmentDriverDetailBinding.inflate(inflater, container, false)
+
+
+        //Get Driver Id
+        val driverId = arguments?.getString("id")
+        if (driverId == null) {
+            Toast.makeText(requireContext(), "Driver ID not found", Toast.LENGTH_SHORT).show()
+            return null
+        }
+
+        //Coroutine
+        CoroutineScope(Dispatchers.IO).launch {
+            val apiService = Core.getRetrofit().create(F1ApiClient::class.java)
+            val response = apiService.getDriverById(driverId)
+
+            withContext(Dispatchers.Main) {
+                val driver = response.body()?.MRData?.DriverTable?.Drivers!!.first()
+                binding.tvGivenNameDetail.text = driver?.givenName
+                binding.tvFamilyNameDetail.text = driver?.familyName
+                binding.tvPermanentNumberDetail.text = driver?.permanentNumber
+                binding.tvBirthDriverDetail.text = driver?.dateOfBirth
+                val driverCode = driver?.code
+                val driverImageName = driverCode?.lowercase()
+                val driverImageResource =
+                    context?.resources?.getIdentifier(
+                        driverImageName,
+                        "drawable",
+                        requireContext().packageName
+                    )
+                if (driverImageResource != null) {
+                    binding.ivDriverDetail.setImageResource(driverImageResource)
+                }
+                val nationality = driver?.nationality
+                val flagImage = when (nationality) {
+                    "British" -> R.drawable.unitedkingdom
+                    "German" -> R.drawable.germany
+                    "Spanish" -> R.drawable.spain
+                    "Mexican" -> R.drawable.mexico
+                    "Dutch" -> R.drawable.netherlands
+                    "Monegasque" -> R.drawable.monaco_flag1
+                    "Canadian" -> R.drawable.canada
+                    "French" -> R.drawable.france
+                    "Australian" -> R.drawable.australia
+                    "Japanese" -> R.drawable.japan
+                    "Finnish" -> R.drawable.finland
+                    "Thai" -> R.drawable.thailand
+                    "Danish" -> R.drawable.denmark
+                    "Chinese" -> R.drawable.china
+                    "American" -> R.drawable.unitedstates
+                    else -> R.drawable.ic_launcher_background
+                }
+                binding.ivDriverFlagDetail.setImageResource(flagImage)
+
+            }
+        }
+        return binding.root
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment DriverDetailFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            DriverDetailFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
     }
+
+
 }
+
+

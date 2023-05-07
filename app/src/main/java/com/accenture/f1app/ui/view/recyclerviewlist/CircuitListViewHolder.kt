@@ -10,7 +10,7 @@ class CircuitListViewHolder (view: View) : RecyclerView.ViewHolder(view){
 
     private val binding = ItemCircuitlistBinding.bind(view)
 
-    fun bind(circuit: Circuit){
+    fun bind(circuit: Circuit, onItemSelected: (String) -> Unit){
         binding.tvCircuitName.text = circuit.circuitName
 
         // Get the flag image according to the driver's nationality
@@ -41,5 +41,7 @@ class CircuitListViewHolder (view: View) : RecyclerView.ViewHolder(view){
             else -> R.drawable.ic_launcher_background
         }
         binding.ivCircuitFlag.setImageResource(flagImage)
+
+        binding.root.setOnClickListener{onItemSelected(circuit.circuitId)}
     }
 }

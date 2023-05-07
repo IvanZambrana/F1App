@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:cardBackgroundColor="@color/f1third"
-    app:cardCornerRadius="30dp"
+    app:cardCornerRadius="20dp"
     tools:context=".ui.view.detail.DriverDetailFragment">
 
     <LinearLayout
@@ -18,7 +18,7 @@
         <ImageView
             android:id="@+id/ivDriverDetail"
             android:layout_width="match_parent"
-            android:layout_height="250dp"
+            android:layout_height="200dp"
             android:layout_gravity="center"
             android:layout_marginVertical="30dp"
             tools:src="@drawable/per" />
@@ -78,7 +78,7 @@
             android:id="@+id/tvBirthDriverDetail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="60dp"
             android:fontFamily="@font/formula1regular"
             android:textAlignment="center"
             android:textColor="@color/f1second"
@@ -90,13 +90,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="70dp"
             android:backgroundTint="@color/f1first"
             android:fontFamily="@font/formula1regular"
-            android:text="Add to favourite"
+            android:paddingVertical="10dp"
+            android:text="@string/addfav"
             android:textColor="@color/f1second"
-            android:textSize="17sp"
-            android:paddingVertical="10dp"/>
+            android:textSize="17sp" />
 
 
     </LinearLayout>

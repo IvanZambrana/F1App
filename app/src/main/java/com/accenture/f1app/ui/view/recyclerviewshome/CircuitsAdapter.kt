@@ -6,7 +6,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.accenture.f1app.R
 import com.accenture.f1app.data.model.circuit.Circuit
 
-class CircuitsAdapter(var circuits: MutableList<Circuit>) :
+class CircuitsAdapter(
+    var circuits: MutableList<Circuit>,
+    private val onItemSelected: (String) -> Unit
+) :
     RecyclerView.Adapter<CircuitsViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CircuitsViewHolder {
@@ -15,9 +18,8 @@ class CircuitsAdapter(var circuits: MutableList<Circuit>) :
     }
 
 
-
     override fun onBindViewHolder(holder: CircuitsViewHolder, position: Int) {
-        holder.render(circuits[position])
+        holder.render(circuits[position], onItemSelected)
     }
 
     override fun getItemCount(): Int = circuits.size

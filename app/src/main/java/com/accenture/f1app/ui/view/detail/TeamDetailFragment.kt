@@ -5,56 +5,82 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import com.accenture.f1app.R
+import com.accenture.f1app.core.Core
+import com.accenture.f1app.data.network.F1ApiClient
+import com.accenture.f1app.databinding.FragmentTeamDetailBinding
+import com.accenture.f1app.databinding.ItemDriverlistBinding
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [TeamDetailFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class TeamDetailFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
-
+    private lateinit var binding: FragmentTeamDetailBinding
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_team_detail, container, false)
+        binding = FragmentTeamDetailBinding.inflate(inflater, container, false)
+
+
+        //Get constructor Id
+        val constructorId = arguments?.getString("id")
+        if (constructorId == null){
+            Toast.makeText(requireContext(), "Constructor ID not found", Toast.LENGTH_SHORT).show()
+            return null
+        }
+
+        //Coroutine
+        CoroutineScope(Dispatchers.IO).launch {
+            val apiService = Core.getRetrofit().create(F1ApiClient::class.java)
+            val response = apiService.getConstructorById(constructorId)
+
+            withContext(Dispatchers.Main) {
+                val constructor = response.body()?.MRData?.ConstructorTable?.Constructors?.first()
+                binding.tvTeamNameDetail.text = constructor?.name
+                binding.tvTeamNationalityDetail.text = constructor?.nationality
+                val teamId = constructor?.constructorId
+                val teamImageResource = context?.resources?.getIdentifier(
+                    teamId,
+                    "drawable",
+                    requireContext().packageName
+                )
+                if (teamImageResource != null) {
+                    binding.ivTeamDetail.setImageResource(teamImageResource)
+                }
+                val teamColor = when (constructorId) {
+                    "williams" -> R.color.williams
+                    "aston_martin" -> R.color.astonmartin
+                    "alfa" -> R.color.alfaromeo
+                    "alphatauri" -> R.color.alphatauri
+                    "alpine" -> R.color.alpine
+                    "mercedes" -> R.color.mercedes
+                    "haas" -> R.color.haas
+                    "mclaren" -> R.color.mclaren
+                    "red_bull" -> R.color.redbull
+                    "ferrari" -> R.color.ferrari
+                    else -> R.color.white
+                }
+                binding.teamDividerdetail.setBackgroundResource(teamColor)
+            }
+
+        }
+
+
+
+
+
+
+
+
+
+        return binding.root
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment TeamDetailFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            TeamDetailFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
-    }
+
 }

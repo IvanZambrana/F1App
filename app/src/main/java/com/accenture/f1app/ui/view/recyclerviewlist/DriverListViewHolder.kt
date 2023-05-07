@@ -6,11 +6,10 @@ import com.accenture.f1app.R
 import com.accenture.f1app.data.model.driver.Driver
 import com.accenture.f1app.databinding.ItemDriverlistBinding
 
-class DriverListViewHolder (view: View) : RecyclerView.ViewHolder(view){
+class DriverListViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
     private val binding = ItemDriverlistBinding.bind(view)
-
-    fun bind(driver: Driver){
+    fun bind(driver: Driver, onItemSelected: (String) -> Unit) {
         binding.tvFamilyName.text = driver.familyName
         binding.tvGivenName.text = driver.givenName
         binding.tvDriverNumber.text = driver.permanentNumber
@@ -31,5 +30,9 @@ class DriverListViewHolder (view: View) : RecyclerView.ViewHolder(view){
             else -> R.color.white
         }
         binding.driverDivider.setBackgroundResource(teamColor)
+
+
+        binding.root.setOnClickListener { onItemSelected(driver.driverId) }
+
     }
 }

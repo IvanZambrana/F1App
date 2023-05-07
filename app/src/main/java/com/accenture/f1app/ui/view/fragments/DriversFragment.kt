@@ -7,8 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
-import androidx.core.content.ContentProviderCompat.requireContext
-import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.accenture.f1app.R
@@ -16,13 +14,12 @@ import com.accenture.f1app.core.Core
 import com.accenture.f1app.data.model.driver.Driver
 import com.accenture.f1app.data.network.F1ApiClient
 import com.accenture.f1app.databinding.FragmentDriversBinding
+import com.accenture.f1app.ui.view.detail.DriverDetailFragment
 import com.accenture.f1app.ui.view.recyclerviewlist.DriverListAdapter
-import com.accenture.f1app.ui.view.recyclerviewshome.DriversAdapter
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import retrofit2.create
 
 
 class DriversFragment : Fragment() {
@@ -40,17 +37,19 @@ class DriversFragment : Fragment() {
         binding = FragmentDriversBinding.bind(rootView)
 
 
-        //initDrivers(rootView)
+       // viewModel = ViewModelProvider(requireActivity()).get(DriverDetailsViewModel::class.java)
+
+
         initDrivers()
 
         binding.svDriver.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
-                searchByName(query.orEmpty())
+                //searchByName(query.orEmpty())
                 return false
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-               driversAdapter.filter(newText.orEmpty())
+                driversAdapter.filter(newText.orEmpty())
                 return false
             }
         })
@@ -59,37 +58,8 @@ class DriversFragment : Fragment() {
         //return rootView
     }
 
-    /*
-    FUNCION INITDRIVERS QUE FUNCIONA
-    private fun initDrivers(rootView: View) {
-         driversAdapter = DriverListAdapter(drivers)
-         rvDrivers = rootView.findViewById(R.id.driverList)
-         rvDrivers.layoutManager =
-             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-         rvDrivers.adapter = driversAdapter
-
-         val apiService = Core.getRetrofit().create(F1ApiClient::class.java)
-         CoroutineScope(Dispatchers.IO).launch {
-             try {
-                 val response = apiService.getDriversFromCurrentSeason()
-                 if (response.isSuccessful && response.body() != null && response.body()!!.MRData.DriverTable.Drivers.isNotEmpty()) {
-                     withContext(Dispatchers.Main) {
-                         drivers = response.body()!!.MRData.DriverTable.Drivers.toMutableList()
-                         driversAdapter.drivers = drivers
-                         driversAdapter.notifyDataSetChanged()
-                     }
-                 } else {
-                     Toast.makeText(requireContext(), "No drivers found", Toast.LENGTH_SHORT).show()
-                 }
-
-             } catch (e: Exception) {
-                 Toast.makeText(requireContext(), "Error loading data", Toast.LENGTH_SHORT).show()
-             }
-         }
-     }
- }*/
     private fun initDrivers() {
-        driversAdapter = DriverListAdapter(drivers)
+        driversAdapter = DriverListAdapter(drivers){ navigateToDriverDetail(it)}
         rvDrivers = binding.driverList
         rvDrivers.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
@@ -106,19 +76,28 @@ class DriversFragment : Fragment() {
                     }
                 } else {
                     withContext(Dispatchers.Main) {
-                        Toast.makeText(requireContext(), "No drivers found", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(requireContext(), "No drivers found", Toast.LENGTH_SHORT)
+                            .show()
                     }
                 }
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
-                    Toast.makeText(requireContext(), "Error loading data", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), "Error loading data", Toast.LENGTH_SHORT)
+                        .show()
                 }
             }
         }
     }
-
-
-
+    private fun navigateToDriverDetail(id: String){
+        val bundle = Bundle()
+        bundle.putString("id", id)
+        val fragment = DriverDetailFragment()
+        fragment.arguments = bundle
+        requireActivity().supportFragmentManager.beginTransaction()
+            .replace(R.id.fl_wrapper, fragment)
+            .addToBackStack(id)
+            .commit()
+    }
 
 
     private fun searchByName(query: String) {
@@ -140,21 +119,6 @@ class DriversFragment : Fragment() {
             }
         }
     }
+
+
 }
-/*
-private fun searchByName(query: String) {
-    CoroutineScope(Dispatchers.IO).launch {
-        val call = Core.getRetrofit().create(F1ApiClient::class.java).getDriversFromCurrentSeason()
-        val driver = call.body()
-        /*{
-            if(call.isSuccessful){
-                //Show RecyclerView
-            }else{
-                //Show error
-            }
-        }*/
-
-    }
-}*/
-
-

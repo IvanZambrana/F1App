@@ -10,7 +10,7 @@ class TeamListViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
     private val binding = ItemTeamlistBinding.bind(view)
 
-    fun bind(team: Constructor) {
+    fun bind(team: Constructor, onItemSelected: (String) -> Unit) {
         binding.tvteamName.text = team.name
 
         //Get the image of the team according to their id and set it in the ImageView 'imgTeam'
@@ -34,6 +34,8 @@ class TeamListViewHolder(view: View) : RecyclerView.ViewHolder(view) {
             else -> R.color.white
         }
         binding.teamDivider.setBackgroundResource(teamColor)
+
+        binding.root.setOnClickListener{onItemSelected(team.constructorId)}
 
     }
 }

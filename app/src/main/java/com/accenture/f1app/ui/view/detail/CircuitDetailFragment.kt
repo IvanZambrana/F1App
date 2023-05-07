@@ -5,56 +5,63 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import com.accenture.f1app.R
+import com.accenture.f1app.core.Core
+import com.accenture.f1app.data.network.F1ApiClient
+import com.accenture.f1app.databinding.FragmentCircuitDetailBinding
+import com.accenture.f1app.databinding.FragmentTeamDetailBinding
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [CircuitDetailFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class CircuitDetailFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
-
+    private lateinit var binding: FragmentCircuitDetailBinding
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_circuit_detail, container, false)
-    }
+        binding = FragmentCircuitDetailBinding.inflate(inflater, container, false)
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment CircuitDetailFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            CircuitDetailFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+        //Get Circuit Id
+        val circuitId = arguments?.getString("id")
+        if (circuitId == null){
+            Toast.makeText(requireContext(), "Circuit ID not found", Toast.LENGTH_SHORT).show()
+        }
+
+        //Coroutine
+        CoroutineScope(Dispatchers.IO).launch {
+            val apiService = Core.getRetrofit().create(F1ApiClient::class.java)
+            val response = apiService.getCircuitById(circuitId)
+
+            withContext(Dispatchers.Main) {
+                val circuit = response.body()?.MRData?.CircuitTable?.Circuits!!.first()
+
+                binding.tvCircuitNameDetail.text = circuit.circuitName
+                binding.tvCircuitCountryDetail.text = circuit.Location.country
+                binding.tvCircuitLocalityDetail.text = circuit.Location.locality
+
+                //Get the image of the circuit according to their id and set it in the ImageView 'imgCircuit'
+                val circuitId = circuit.circuitId
+                val circuitImageResource = context?.resources?.getIdentifier(circuitId, "drawable", requireContext().packageName)
+
+
+                if (circuitImageResource != null) {
+                    binding.ivCircuitDetail.setImageResource(circuitImageResource)
                 }
             }
+
+
+
+
+
+        }
+        return binding.root
     }
+
+
 }

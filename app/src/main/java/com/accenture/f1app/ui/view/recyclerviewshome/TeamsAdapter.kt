@@ -6,7 +6,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.accenture.f1app.R
 import com.accenture.f1app.data.model.team.Constructor
 
-class TeamsAdapter(var teams: MutableList<Constructor>) :
+class TeamsAdapter(
+    var teams: MutableList<Constructor>,
+    private val onItemSelected: (String) -> Unit
+) :
     RecyclerView.Adapter<TeamsViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TeamsViewHolder {
@@ -15,7 +18,7 @@ class TeamsAdapter(var teams: MutableList<Constructor>) :
     }
 
     override fun onBindViewHolder(holder: TeamsViewHolder, position: Int) {
-        holder.render(teams[position])
+        holder.render(teams[position], onItemSelected)
     }
 
     override fun getItemCount(): Int = teams.size

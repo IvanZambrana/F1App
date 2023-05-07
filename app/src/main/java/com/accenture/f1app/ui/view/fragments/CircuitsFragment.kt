@@ -14,6 +14,7 @@ import com.accenture.f1app.core.Core
 import com.accenture.f1app.data.model.circuit.Circuit
 import com.accenture.f1app.data.network.F1ApiClient
 import com.accenture.f1app.databinding.FragmentCircuitsBinding
+import com.accenture.f1app.ui.view.detail.CircuitDetailFragment
 import com.accenture.f1app.ui.view.recyclerviewlist.CircuitListAdapter
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -40,7 +41,7 @@ class CircuitsFragment : Fragment() {
 
         binding.svCircuit.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
-                searchByName(query.orEmpty())
+                //searchByName(query.orEmpty())
                 return false
             }
 
@@ -55,8 +56,8 @@ class CircuitsFragment : Fragment() {
         return binding.root
     }
 
-    private fun initCircuits(){
-        circuitAdapter = CircuitListAdapter(circuits)
+    private fun initCircuits() {
+        circuitAdapter = CircuitListAdapter(circuits) { navigateToCircuitDetail(it) }
         rvCircuit = binding.circuitList
         rvCircuit.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
@@ -73,24 +74,27 @@ class CircuitsFragment : Fragment() {
                     }
                 } else {
                     withContext(Dispatchers.Main) {
-                        Toast.makeText(requireContext(), "No circuits found", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(requireContext(), "No circuits found", Toast.LENGTH_SHORT)
+                            .show()
                     }
                 }
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
-                    Toast.makeText(requireContext(), "Error loading data", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), "Error loading data", Toast.LENGTH_SHORT)
+                        .show()
                 }
             }
         }
     }
 
 
-    private fun searchByName(query: String){
+    private fun searchByName(query: String) {
         CoroutineScope(Dispatchers.IO).launch {
             val apiService = Core.getRetrofit().create(F1ApiClient::class.java)
             val response = apiService.getCircuitsFromCurrentSeason(query)
             if (response.isSuccessful && response.body() != null && response.body()!!.MRData.CircuitTable.Circuits.isNotEmpty()) {
-                val filteredCircuits = response.body()!!.MRData.CircuitTable.Circuits.toMutableList()
+                val filteredCircuits =
+                    response.body()!!.MRData.CircuitTable.Circuits.toMutableList()
                 withContext(Dispatchers.Main) {
                     circuits = filteredCircuits
                     circuitAdapter.updateCircuits(circuits)
@@ -105,30 +109,15 @@ class CircuitsFragment : Fragment() {
         }
     }
 
-   /* private fun initCircuits(rootView: View) {
-        circuitAdapter = CircuitListAdapter(circuits)
-        rvCircuit = rootView.findViewById(R.id.circuitList)
-        rvCircuit.layoutManager =
-            LinearLayoutManager(requireContext(),LinearLayoutManager.VERTICAL, false)
-        rvCircuit.adapter = circuitAdapter
-        val apiService = Core.getRetrofit().create(F1ApiClient::class.java)
-        CoroutineScope(Dispatchers.IO).launch {
-            try {
-                val response = apiService.getCircuitsFromCurrentSeason()
-                if (response.isSuccessful && response.body() != null && response.body()!!.MRData.CircuitTable.Circuits.isNotEmpty()) {
-                    withContext(Dispatchers.Main) {
-                        circuits = response.body()!!.MRData.CircuitTable.Circuits.toMutableList()
-                        circuitAdapter.circuits = circuits
-                        circuitAdapter.notifyDataSetChanged()
-                    }
-                } else {
-                    Toast.makeText(requireContext(), "No circuits found", Toast.LENGTH_SHORT).show()
-                }
-
-            } catch (e: Exception) {
-                Toast.makeText(requireContext(), "Error loading data", Toast.LENGTH_SHORT).show()
-            }
-        }
-    }*/
+    private fun navigateToCircuitDetail(id: String) {
+        val bundle = Bundle()
+        bundle.putString("id", id)
+        val fragment = CircuitDetailFragment()
+        fragment.arguments = bundle
+        requireActivity().supportFragmentManager.beginTransaction()
+            .replace(R.id.fl_wrapper, fragment)
+            .addToBackStack(id)
+            .commit()
+    }
 
 }

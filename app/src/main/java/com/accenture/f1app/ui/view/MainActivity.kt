@@ -37,13 +37,12 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-
-
-
     private fun makeCurrentFragment(fragment: Fragment) {
         val fragmentManager = supportFragmentManager
         val fragmentTransaction = fragmentManager.beginTransaction()
         fragmentTransaction.replace(R.id.fl_wrapper, fragment)
         fragmentTransaction.commit()
     }
+
+
 }

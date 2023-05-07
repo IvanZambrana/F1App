@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     app:cardBackgroundColor="@color/f1third"
     app:cardCornerRadius="30dp"
-    tools:context=".ui.view.detail.DriverDetailFragment">
+    tools:context=".ui.view.detail.CircuitDetailFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -36,11 +36,10 @@
             tools:text="Autodromo Enzo e Dino Ferrari" />
 
 
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginVertical="20dp"
             android:orientation="horizontal">
 
             <TextView
@@ -68,6 +67,7 @@
                 android:textSize="17sp"
                 tools:text="italia" />
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -99,16 +99,17 @@
                 android:textSize="17sp"
                 tools:text="imola" />
         </LinearLayout>
+
         <Button
-            android:id="@+id/btnTeamFav"
+            android:id="@+id/btnCircuitFav"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="80dp"
+            android:layout_marginTop="50dp"
             android:backgroundTint="@color/f1first"
             android:fontFamily="@font/formula1regular"
             android:paddingVertical="10dp"
-            android:text="Add to favourite"
+            android:text="@string/addfav"
             android:textColor="@color/f1second"
             android:textSize="17sp" />
     </LinearLayout>

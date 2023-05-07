@@ -16,6 +16,7 @@ import com.accenture.f1app.data.model.team.Constructor
 import com.accenture.f1app.data.network.F1ApiClient
 import com.accenture.f1app.databinding.FragmentDriversBinding
 import com.accenture.f1app.databinding.FragmentTeamsBinding
+import com.accenture.f1app.ui.view.detail.TeamDetailFragment
 import com.accenture.f1app.ui.view.recyclerviewlist.DriverListAdapter
 import com.accenture.f1app.ui.view.recyclerviewlist.TeamListAdapter
 import kotlinx.coroutines.CoroutineScope
@@ -40,7 +41,7 @@ class TeamsFragment : Fragment() {
 
         binding.svTeams.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
-                searchByName(query.orEmpty())
+                //searchByName(query.orEmpty())
                 return false
             }
 
@@ -54,35 +55,8 @@ class TeamsFragment : Fragment() {
         return binding.root
     }
 
-    /*
-        private fun initTeams(rootView: View) {
-            teamsAdapter = TeamListAdapter(teams)
-            rvTeams = rootView.findViewById(R.id.teamList)
-            rvTeams.layoutManager =
-                LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-            rvTeams.adapter = teamsAdapter
-
-            val apiService = Core.getRetrofit().create(F1ApiClient::class.java)
-            CoroutineScope(Dispatchers.IO).launch {
-                try {
-                    val response = apiService.getConstructorsFromCurrentSeason()
-                    if (response.isSuccessful && response.body() != null && response.body()!!.MRData.ConstructorTable.Constructors.isNotEmpty()) {
-                        withContext(Dispatchers.Main) {
-                            teams = response.body()!!.MRData.ConstructorTable.Constructors.toMutableList()
-                            teamsAdapter.teams = teams
-                            teamsAdapter.notifyDataSetChanged()
-                        }
-                    } else {
-                        Toast.makeText(requireContext(), "No teams found", Toast.LENGTH_SHORT).show()
-                    }
-
-                } catch (e: Exception) {
-                    Toast.makeText(requireContext(), "Error loading data", Toast.LENGTH_SHORT).show()
-                }
-            }
-        }*/
     private fun initTeams() {
-        teamsAdapter = TeamListAdapter(teams)
+        teamsAdapter = TeamListAdapter(teams) { navigateToTeamDetail(it) }
         rvTeams = binding.teamList
         rvTeams.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
@@ -132,6 +106,17 @@ class TeamsFragment : Fragment() {
                 }
             }
         }
+    }
+
+    private fun navigateToTeamDetail(id: String) {
+        val bundle = Bundle()
+        bundle.putString("id", id)
+        val fragment = TeamDetailFragment()
+        fragment.arguments = bundle
+        requireActivity().supportFragmentManager.beginTransaction()
+            .replace(R.id.fl_wrapper, fragment)
+            .addToBackStack(id)
+            .commit()
     }
 
 }

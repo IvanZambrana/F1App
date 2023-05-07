@@ -24,7 +24,7 @@
                 android:id="@+id/imgDriver"
                 android:layout_width="150dp"
                 android:layout_height="150dp"
-                tools:src="@drawable/feralo01" />
+                tools:src="@drawable/alo" />
 
             <LinearLayout
                 android:layout_width="match_parent"

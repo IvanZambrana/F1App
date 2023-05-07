@@ -1,7 +1,6 @@
 package com.accenture.f1app.ui.view.fragments
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -15,6 +14,9 @@ import com.accenture.f1app.data.model.circuit.Circuit
 import com.accenture.f1app.data.model.driver.Driver
 import com.accenture.f1app.data.model.team.Constructor
 import com.accenture.f1app.data.network.F1ApiClient
+import com.accenture.f1app.ui.view.detail.CircuitDetailFragment
+import com.accenture.f1app.ui.view.detail.DriverDetailFragment
+import com.accenture.f1app.ui.view.detail.TeamDetailFragment
 import com.accenture.f1app.ui.view.recyclerviewshome.CircuitsAdapter
 import com.accenture.f1app.ui.view.recyclerviewshome.DriversAdapter
 import com.accenture.f1app.ui.view.recyclerviewshome.TeamsAdapter
@@ -52,13 +54,12 @@ class HomeFragment : Fragment() {
         initTeams(rootView) //Initialize teams RecyclerView
 
 
-
         return rootView
 
     }
 
     private fun initTeams(rootView: View) {
-        teamsAdapter = TeamsAdapter(teams)
+        teamsAdapter = TeamsAdapter(teams) { navigateToTeamDetail(it) }
         rvTeams = rootView.findViewById(R.id.rvTeams)
         rvTeams.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
@@ -89,7 +90,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun initCircuits(rootView: View) {
-        circuitsAdapter = CircuitsAdapter(circuits)
+        circuitsAdapter = CircuitsAdapter(circuits) { navigateToCircuitDetail(it) }
         rvCircuits = rootView.findViewById(R.id.rvCircuits)
         rvCircuits.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
@@ -121,7 +122,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun initDrivers(rootView: View) {
-        driversAdapter = DriversAdapter(drivers)
+        driversAdapter = DriversAdapter(drivers) { navigateToDriverDetail(it) }
         rvDrivers = rootView.findViewById(R.id.rvDrivers)
         rvDrivers.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
@@ -136,9 +137,6 @@ class HomeFragment : Fragment() {
                         drivers = response.body()!!.MRData.DriverTable.Drivers.toMutableList()
                         driversAdapter.drivers = drivers
                         driversAdapter.notifyDataSetChanged()
-
-
-
                     }
                 } else {
                     Toast.makeText(requireContext(), "No drivers found", Toast.LENGTH_SHORT).show()
@@ -148,18 +146,41 @@ class HomeFragment : Fragment() {
             }
         }
 
-
-        //driversAdapter = driversAdapter{driverId -> navigateToDetail(driverId)}
-    }
-
-    public fun navigateToDetail(id: String) {
-   /*     val intent = Intent(requireContext(), DetailDriverActivity::class.java)
-        intent.putExtra(EXTRA_ID, id)
-        startActivity(intent)
-
-    */
-        Log.i("izn", "La Id del piloto seleccionado es $id")
     }
 
 
+    private fun navigateToDriverDetail(id: String) {
+        val bundle = Bundle()
+        bundle.putString("id", id)
+        val fragment = DriverDetailFragment()
+        fragment.arguments = bundle
+        requireActivity().supportFragmentManager.beginTransaction()
+            .replace(R.id.fl_wrapper, fragment)
+            .addToBackStack(id)
+            .commit()
+    }
+
+
+    private fun navigateToTeamDetail(id: String) {
+        val bundle = Bundle()
+        bundle.putString("id", id)
+        val fragment = TeamDetailFragment()
+        fragment.arguments = bundle
+        requireActivity().supportFragmentManager.beginTransaction()
+            .replace(R.id.fl_wrapper, fragment)
+            .addToBackStack(id)
+            .commit()
+    }
+
+    private fun navigateToCircuitDetail(id: String) {
+        val bundle = Bundle()
+        bundle.putString("id", id)
+        val fragment = CircuitDetailFragment()
+        fragment.arguments = bundle
+        requireActivity().supportFragmentManager.beginTransaction()
+            .replace(R.id.fl_wrapper, fragment)
+            .addToBackStack(id)
+            .commit()
+    }
 }
+

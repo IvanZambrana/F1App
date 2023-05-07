@@ -8,7 +8,10 @@ import com.accenture.f1app.data.model.circuit.Circuit
 import com.accenture.f1app.data.model.driver.Driver
 import com.accenture.f1app.data.model.team.Constructor
 
-class TeamListAdapter(var teams: MutableList<Constructor>) : RecyclerView.Adapter<TeamListViewHolder>() {
+class TeamListAdapter(
+    var teams: MutableList<Constructor>,
+    private val onItemSelected: (String) -> Unit
+) : RecyclerView.Adapter<TeamListViewHolder>() {
 
     var filteredTeams: MutableList<Constructor> = mutableListOf()
 
@@ -17,12 +20,13 @@ class TeamListAdapter(var teams: MutableList<Constructor>) : RecyclerView.Adapte
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TeamListViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_teamlist, parent, false)
+        val view =
+            LayoutInflater.from(parent.context).inflate(R.layout.item_teamlist, parent, false)
         return TeamListViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: TeamListViewHolder, position: Int) {
-        holder.bind(filteredTeams[position])
+        holder.bind(filteredTeams[position], onItemSelected)
     }
 
     override fun getItemCount(): Int = filteredTeams.size

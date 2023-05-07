@@ -5,24 +5,30 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.accenture.f1app.R
 import com.accenture.f1app.data.model.driver.Driver
+import com.accenture.f1app.databinding.ItemDriverlistBinding
 import com.accenture.f1app.ui.view.recyclerviewshome.DriversViewHolder
 
-class DriverListAdapter(var drivers: MutableList<Driver>) :
+class DriverListAdapter(
+    var drivers: MutableList<Driver>,
+    private val onItemSelected: (String) -> Unit
+) :
     RecyclerView.Adapter<DriverListViewHolder>() {
 
     var filteredDrivers: MutableList<Driver> = mutableListOf()
+
 
     init {
         filteredDrivers.addAll(drivers)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DriverListViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_driverlist, parent, false)
+        val view =
+            LayoutInflater.from(parent.context).inflate(R.layout.item_driverlist, parent, false)
         return DriverListViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: DriverListViewHolder, position: Int) {
-        holder.bind(filteredDrivers[position])
+        holder.bind(filteredDrivers[position], onItemSelected)
     }
 
     override fun getItemCount(): Int = filteredDrivers.size
@@ -33,7 +39,11 @@ class DriverListAdapter(var drivers: MutableList<Driver>) :
             filteredDrivers.addAll(drivers)
         } else {
             for (driver in drivers) {
-                if (driver.givenName.contains(query, true) || driver.familyName.contains(query, true)) {
+                if (driver.givenName.contains(query, true) || driver.familyName.contains(
+                        query,
+                        true
+                    )
+                ) {
                     filteredDrivers.add(driver)
                 }
             }
