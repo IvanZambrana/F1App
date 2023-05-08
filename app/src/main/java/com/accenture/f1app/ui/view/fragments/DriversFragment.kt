@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.accenture.f1app.R
@@ -59,6 +60,7 @@ class DriversFragment : Fragment() {
     }
 
     private fun initDrivers() {
+        binding.progressBarDriver.isVisible = true
         driversAdapter = DriverListAdapter(drivers){ navigateToDriverDetail(it)}
         rvDrivers = binding.driverList
         rvDrivers.layoutManager =
@@ -71,6 +73,7 @@ class DriversFragment : Fragment() {
                 val response = apiService.getDriversFromCurrentSeason()
                 if (response.isSuccessful && response.body() != null && response.body()!!.MRData.DriverTable.Drivers.isNotEmpty()) {
                     withContext(Dispatchers.Main) {
+                        binding.progressBarDriver.isVisible = false
                         drivers = response.body()!!.MRData.DriverTable.Drivers.toMutableList()
                         driversAdapter.updateDrivers(drivers)
                     }

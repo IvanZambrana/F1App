@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.view.isVisible
 import com.accenture.f1app.R
 import com.accenture.f1app.core.Core
 import com.accenture.f1app.data.network.F1ApiClient
@@ -26,11 +27,11 @@ class TeamDetailFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         binding = FragmentTeamDetailBinding.inflate(inflater, container, false)
-
+        binding.progressBar.isVisible = true
 
         //Get constructor Id
         val constructorId = arguments?.getString("id")
-        if (constructorId == null){
+        if (constructorId == null) {
             Toast.makeText(requireContext(), "Constructor ID not found", Toast.LENGTH_SHORT).show()
             return null
         }
@@ -42,6 +43,7 @@ class TeamDetailFragment : Fragment() {
 
             withContext(Dispatchers.Main) {
                 val constructor = response.body()?.MRData?.ConstructorTable?.Constructors?.first()
+                binding.progressBar.isVisible = false
                 binding.tvTeamNameDetail.text = constructor?.name
                 binding.tvTeamNationalityDetail.text = constructor?.nationality
                 val teamId = constructor?.constructorId

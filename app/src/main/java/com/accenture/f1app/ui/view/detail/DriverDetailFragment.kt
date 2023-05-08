@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.view.isVisible
 import com.accenture.f1app.R
 import com.accenture.f1app.core.Core
 import com.accenture.f1app.data.model.driver.Driver
@@ -31,7 +32,7 @@ class DriverDetailFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         binding = FragmentDriverDetailBinding.inflate(inflater, container, false)
-
+        binding.progressBar.isVisible = true
 
         //Get Driver Id
         val driverId = arguments?.getString("id")
@@ -47,6 +48,7 @@ class DriverDetailFragment : Fragment() {
 
             withContext(Dispatchers.Main) {
                 val driver = response.body()?.MRData?.DriverTable?.Drivers!!.first()
+                binding.progressBar.isVisible = false
                 binding.tvGivenNameDetail.text = driver?.givenName
                 binding.tvFamilyNameDetail.text = driver?.familyName
                 binding.tvPermanentNumberDetail.text = driver?.permanentNumber

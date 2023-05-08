@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.accenture.f1app.R
@@ -57,6 +58,7 @@ class CircuitsFragment : Fragment() {
     }
 
     private fun initCircuits() {
+        binding.progressBarCircuits.isVisible = true
         circuitAdapter = CircuitListAdapter(circuits) { navigateToCircuitDetail(it) }
         rvCircuit = binding.circuitList
         rvCircuit.layoutManager =
@@ -69,6 +71,7 @@ class CircuitsFragment : Fragment() {
                 val response = apiService.getCircuitsFromCurrentSeason()
                 if (response.isSuccessful && response.body() != null && response.body()!!.MRData.CircuitTable.Circuits.isNotEmpty()) {
                     withContext(Dispatchers.Main) {
+                        binding.progressBarCircuits.isVisible = false
                         circuits = response.body()!!.MRData.CircuitTable.Circuits.toMutableList()
                         circuitAdapter.updateCircuits(circuits)
                     }

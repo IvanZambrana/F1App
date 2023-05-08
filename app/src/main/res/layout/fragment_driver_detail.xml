@@ -8,98 +8,117 @@
     app:cardCornerRadius="20dp"
     tools:context=".ui.view.detail.DriverDetailFragment">
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginHorizontal="20dp"
-        android:background="@color/f1third"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
-        <ImageView
-            android:id="@+id/ivDriverDetail"
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:layout_gravity="center"
-            android:layout_marginVertical="30dp"
-            tools:src="@drawable/per" />
 
-        <TextView
-            android:id="@+id/tvGivenNameDetail"
-            android:layout_width="match_parent"
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="20dp"
-            android:fontFamily="@font/formula1bold"
-            android:textAllCaps="true"
-            android:textColor="@color/f1second"
-            android:textSize="20sp"
-            tools:text="sergio" />
-
-        <TextView
-            android:id="@+id/tvFamilyNameDetail"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="5dp"
-            android:fontFamily="@font/formula1wide"
-            android:textAllCaps="true"
-            android:textColor="@color/f1second"
-            android:textSize="23sp"
-            tools:text="pérez" />
+            android:indeterminateTint="@color/f1second"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
-            android:orientation="horizontal">
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginHorizontal="20dp"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" >
+
+            <ImageView
+                android:id="@+id/ivDriverDetail"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_gravity="center"
+                android:layout_marginVertical="30dp"
+                tools:src="@drawable/per" />
 
             <TextView
-                android:id="@+id/tvPermanentNumberDetail"
-                android:layout_width="150dp"
+                android:id="@+id/tvGivenNameDetail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="20dp"
+                android:fontFamily="@font/formula1bold"
+                android:textAllCaps="true"
+                android:textColor="@color/f1second"
+                android:textSize="20sp"
+                tools:text="sergio" />
+
+            <TextView
+                android:id="@+id/tvFamilyNameDetail"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="5dp"
                 android:fontFamily="@font/formula1wide"
-                android:textAlignment="center"
                 android:textAllCaps="true"
-                android:textColor="#C8FF00"
-                android:textSize="40sp"
-                tools:text="11" />
+                android:textColor="@color/f1second"
+                android:textSize="23sp"
+                tools:text="pérez" />
 
-            <ImageView
-                android:id="@+id/ivDriverFlagDetail"
-                android:layout_width="150dp"
-                android:layout_height="50dp"
-                android:layout_marginHorizontal="20dp"
-                tools:src="@drawable/mexico" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="50dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tvPermanentNumberDetail"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="5dp"
+                    android:fontFamily="@font/formula1wide"
+                    android:textAlignment="center"
+                    android:textAllCaps="true"
+                    android:textColor="#C8FF00"
+                    android:textSize="40sp"
+                    tools:text="11" />
+
+                <ImageView
+                    android:id="@+id/ivDriverFlagDetail"
+                    android:layout_width="150dp"
+                    android:layout_height="50dp"
+                    android:layout_marginHorizontal="20dp"
+                    tools:src="@drawable/mexico" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tvBirthDriverDetail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="60dp"
+                android:fontFamily="@font/formula1regular"
+                android:textAlignment="center"
+                android:textColor="@color/f1second"
+                android:textSize="30sp"
+                tools:text="1990-01-26" />
+
+            <Button
+                android:id="@+id/btnDriverFav"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="70dp"
+                android:backgroundTint="@color/f1first"
+                android:fontFamily="@font/formula1regular"
+                android:paddingVertical="10dp"
+                android:text="@string/addfav"
+                android:textColor="@color/f1second"
+                android:textSize="17sp" />
+
+
         </LinearLayout>
-
-        <TextView
-            android:id="@+id/tvBirthDriverDetail"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="60dp"
-            android:fontFamily="@font/formula1regular"
-            android:textAlignment="center"
-            android:textColor="@color/f1second"
-            android:textSize="30sp"
-            tools:text="1990-01-26" />
-
-        <Button
-            android:id="@+id/btnDriverFav"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="70dp"
-            android:backgroundTint="@color/f1first"
-            android:fontFamily="@font/formula1regular"
-            android:paddingVertical="10dp"
-            android:text="@string/addfav"
-            android:textColor="@color/f1second"
-            android:textSize="17sp" />
-
-
-    </LinearLayout>
-
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.cardview.widget.CardView>

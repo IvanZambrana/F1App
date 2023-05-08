@@ -8,84 +8,104 @@
     app:cardCornerRadius="30dp"
     tools:context=".ui.view.detail.TeamDetailFragment">
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginHorizontal="20dp"
-        android:background="@color/f1third"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
-        <ImageView
-            android:id="@+id/ivTeamDetail"
+
+        <ProgressBar
+            android:id="@+id/progressBar"
             android:layout_width="wrap_content"
-            android:layout_height="280dp"
-            android:layout_gravity="center"
-            android:layout_marginTop="30dp"
-            tools:src="@drawable/ferrari" />
-
-        <TextView
-            android:id="@+id/tvTeamNameDetail"
-            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:fontFamily="@font/formula1bold"
-            android:textAlignment="center"
-            android:textAllCaps="true"
-            android:textColor="@color/f1second"
-            android:textSize="36sp"
-            tools:text="ferrari" />
-
-        <View
-            android:id="@+id/teamDividerdetail"
-            android:layout_width="300dp"
-            android:layout_height="20dp"
-            android:layout_gravity="center"
-            android:layout_marginVertical="20dp"
-            tools:background="@color/ferrari" />
+            android:indeterminateTint="@color/f1second"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginVertical="50dp"
-            android:orientation="horizontal">
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginHorizontal="20dp"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/ivTeamDetail"
+                android:layout_width="wrap_content"
+                android:layout_height="280dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="30dp"
+                tools:src="@drawable/ferrari" />
 
             <TextView
-                android:layout_width="150dp"
+                android:id="@+id/tvTeamNameDetail"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginLeft="20dp"
-                android:fontFamily="@font/formula1regular"
-                android:text="@string/nationality"
-                android:textAlignment="center"
-                android:textAllCaps="true"
-                android:textColor="@color/f1second"
-                android:textSize="17sp" />
-
-            <TextView
-                android:id="@+id/tvTeamNationalityDetail"
-                android:layout_width="150dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginLeft="20dp"
+                android:layout_marginTop="20dp"
                 android:fontFamily="@font/formula1bold"
                 android:textAlignment="center"
                 android:textAllCaps="true"
                 android:textColor="@color/f1second"
-                android:textSize="17sp"
-                tools:text="italian" />
-        </LinearLayout>
+                android:textSize="36sp"
+                tools:text="ferrari" />
 
-        <Button
-            android:id="@+id/btnTeamFav"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="60dp"
-            android:backgroundTint="@color/f1first"
-            android:fontFamily="@font/formula1regular"
-            android:paddingVertical="10dp"
-            android:text="@string/addfav"
-            android:textColor="@color/f1second"
-            android:textSize="17sp" />
-    </LinearLayout>
+            <View
+                android:id="@+id/teamDividerdetail"
+                android:layout_width="300dp"
+                android:layout_height="20dp"
+                android:layout_gravity="center"
+                android:layout_marginVertical="20dp"
+                tools:background="@color/ferrari" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="50dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="20dp"
+                    android:fontFamily="@font/formula1regular"
+                    android:text="@string/nationality"
+                    android:textAlignment="center"
+                    android:textAllCaps="true"
+                    android:textColor="@color/f1second"
+                    android:textSize="17sp" />
+
+                <TextView
+                    android:id="@+id/tvTeamNationalityDetail"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="20dp"
+                    android:fontFamily="@font/formula1bold"
+                    android:textAlignment="center"
+                    android:textAllCaps="true"
+                    android:textColor="@color/f1second"
+                    android:textSize="17sp"
+                    tools:text="italian" />
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/btnTeamFav"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="60dp"
+                android:backgroundTint="@color/f1first"
+                android:fontFamily="@font/formula1regular"
+                android:paddingVertical="10dp"
+                android:text="@string/addfav"
+                android:textColor="@color/f1second"
+                android:textSize="17sp" />
+        </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

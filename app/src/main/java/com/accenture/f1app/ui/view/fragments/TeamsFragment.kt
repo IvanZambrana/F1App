@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Adapter
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.accenture.f1app.R
@@ -41,7 +42,6 @@ class TeamsFragment : Fragment() {
 
         binding.svTeams.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
-                //searchByName(query.orEmpty())
                 return false
             }
 
@@ -56,6 +56,7 @@ class TeamsFragment : Fragment() {
     }
 
     private fun initTeams() {
+        binding.progressBarTeams.isVisible = true
         teamsAdapter = TeamListAdapter(teams) { navigateToTeamDetail(it) }
         rvTeams = binding.teamList
         rvTeams.layoutManager =
@@ -68,6 +69,7 @@ class TeamsFragment : Fragment() {
                 val response = apiService.getConstructorsFromCurrentSeason()
                 if (response.isSuccessful && response.body() != null && response.body()!!.MRData.ConstructorTable.Constructors.isNotEmpty()) {
                     withContext(Dispatchers.Main) {
+                        binding.progressBarTeams.isVisible = false
                         teams =
                             response.body()!!.MRData.ConstructorTable.Constructors.toMutableList()
                         teamsAdapter.updateTeams(teams)

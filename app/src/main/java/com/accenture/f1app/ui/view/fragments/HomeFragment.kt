@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.accenture.f1app.R
@@ -14,6 +15,7 @@ import com.accenture.f1app.data.model.circuit.Circuit
 import com.accenture.f1app.data.model.driver.Driver
 import com.accenture.f1app.data.model.team.Constructor
 import com.accenture.f1app.data.network.F1ApiClient
+import com.accenture.f1app.databinding.FragmentHomeBinding
 import com.accenture.f1app.ui.view.detail.CircuitDetailFragment
 import com.accenture.f1app.ui.view.detail.DriverDetailFragment
 import com.accenture.f1app.ui.view.detail.TeamDetailFragment
@@ -29,8 +31,6 @@ class HomeFragment : Fragment() {
     private lateinit var driversAdapter: DriversAdapter
     private lateinit var rvDrivers: RecyclerView
 
-    //private var driverViewModel:DriverViewModel by viewModels { DriverViewModel(drivers) }
-
     //Circuits
     private var circuits = mutableListOf<Circuit>()
     private lateinit var circuitsAdapter: CircuitsAdapter
@@ -41,6 +41,7 @@ class HomeFragment : Fragment() {
     private lateinit var teamsAdapter: TeamsAdapter
     private lateinit var rvTeams: RecyclerView
 
+    private lateinit var binding: FragmentHomeBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -48,17 +49,18 @@ class HomeFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         val rootView = inflater.inflate(R.layout.fragment_home, container, false)
-
+        binding = FragmentHomeBinding.bind(rootView)
         initDrivers(rootView) //Initialize drivers RecyclerView
         initCircuits(rootView) //Initialize circuits RecyclerView
         initTeams(rootView) //Initialize teams RecyclerView
 
 
-        return rootView
+        return binding.root
 
     }
 
     private fun initTeams(rootView: View) {
+        binding.progressBar.isVisible = true
         teamsAdapter = TeamsAdapter(teams) { navigateToTeamDetail(it) }
         rvTeams = rootView.findViewById(R.id.rvTeams)
         rvTeams.layoutManager =
@@ -73,6 +75,7 @@ class HomeFragment : Fragment() {
                 if (response.isSuccessful) {
                     // Update the UI on the main thread with the team data
                     withContext(Dispatchers.Main) {
+                        binding.progressBar.isVisible = false
                         teams =
                             response.body()!!.MRData.ConstructorTable.Constructors.toMutableList()
                         teamsAdapter.teams = teams
